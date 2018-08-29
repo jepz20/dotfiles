@@ -211,3 +211,27 @@ alias dbmu='spring rake db:migrate:up'
 
 # Homebrew
 alias brewu='brew update  && brew upgrade && brew cleanup && brew prune && brew doctor'
+
+# FOX
+alias fdir="cd ~/workspace/xteam/fox/dcgapi-services"
+alias fa="docker ps | awk -v OFS='\t' '; { gsub(\"0.0.0.0:\",\"\",\$(NF-2));gsub(\"->7000/tcp,\",\"\",\$(NF-2)); print \"Name: \"\$NF, \"Debug Port: \"\$(NF-2)}'"
+alias fag=" fa | grepm"
+alias fd="fdir; docker-compose down"
+alias fap="fdir; bin/start -a"
+alias fl="docker-compose logs -f | grep -v 'health\|nsolid'"
+alias fs="docker-compose stop \"\$@\""
+grepm() {
+  a="";
+  for var in "$@"
+  do
+    if [ "$a" = "" ]
+    then
+      a="$var"
+    else
+    fi
+    a="$a\|$var"
+  done
+  grep "$a"
+}
+fu() {docker-compose up -d "$@" && fag "$@"}
+fr() { docker-compose stop "$@" && fu "$@"}
