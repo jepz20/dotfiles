@@ -220,6 +220,9 @@ alias fd="fdir; docker-compose down"
 alias fap="fdir; bin/start -a"
 alias fl="docker-compose logs -f | grep -v 'health\|nsolid'"
 alias fs="docker-compose stop \"\$@\""
+alias ftl="npm run test-local"
+alias flin="npm run lint-me"
+alias ftc="npm run type-check"
 grepm() {
   a="";
   for var in "$@"
@@ -235,3 +238,4 @@ grepm() {
 }
 fu() {docker-compose up -d "$@" && fag "$@"}
 fr() { docker-compose stop "$@" && fu "$@"}
+
