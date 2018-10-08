@@ -214,6 +214,7 @@ alias brewu='brew update  && brew upgrade && brew cleanup && brew prune && brew 
 
 # FOX
 alias fdir="cd ~/workspace/xteam/fox/dcgapi-services"
+alias ldir="cd ~/workspace/xteam/fox/lc3-ui"
 alias fa="docker ps | awk -v OFS='\t' '; { gsub(\"0.0.0.0:\",\"\",\$(NF-2));gsub(\"->7000/tcp,\",\"\",\$(NF-2)); print \"Name: \"\$NF, \"Debug Port: \"\$(NF-2)}'"
 alias fag=" fa | grepm"
 alias fd="fdir; docker-compose down"
@@ -223,6 +224,7 @@ alias fs="docker-compose stop \"\$@\""
 alias ftl="npm run test-local"
 alias flin="npm run lint-me"
 alias ftc="npm run type-check"
+alias fce="fdir; ls -l .env"
 grepm() {
   a="";
   for var in "$@"
@@ -237,5 +239,7 @@ grepm() {
   grep "$a"
 }
 fu() {docker-compose up -d "$@" && fag "$@"}
+alias fub="fu es mongo"
+alias fud="fu video geo video-draft geo-draft screens liveplayer vodplayer"
 fr() { docker-compose stop "$@" && fu "$@"}
 
