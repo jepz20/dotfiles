@@ -130,7 +130,7 @@ alias gt='git t'
 alias gbg='git bisect good'
 alias gbb='git bisect bad'
 alias gdmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
-
+grrb() { prev_name=$(git symbolic-ref --short HEAD) && git branch -m "$@" && git push origin :${prev_name} && (git branch --unset-upstream || git push --set-upstream origin "$@")} #rename remote branch
 # Common shell functions
 alias less='less -r'
 alias tf='tail -f'
@@ -212,13 +212,19 @@ alias dbmu='spring rake db:migrate:up'
 # Homebrew
 alias brewu='brew update  && brew upgrade && brew cleanup && brew prune && brew doctor'
 
+# My Workspace
+alias wdir="cd ~/workspace"
+alias wrdir="cd ~/workspace/reviewer"
+alias myreads="cd ~/workspace/reviewer/myreads"
+alias wldir="cd ~/workspace/learn"
 # FOX
-alias fdir="cd ~/workspace/xteam/fox/dcgapi-services"
+export FOX_DIR=~/workspace/xteam/fox/dcgapi-services
+alias fdir="cd $FOX_DIR"
 alias ldir="cd ~/workspace/xteam/fox/lc3-ui"
-alias fa="docker ps | awk -v OFS='\t' '; { gsub(\"0.0.0.0:\",\"\",\$(NF-2));gsub(\"->7000/tcp,\",\"\",\$(NF-2)); print \"Name: \"\$NF, \"Debug Port: \"\$(NF-2)}'"
-alias fag=" fa | grepm"
+alias faa="docker ps | awk -v OFS='\t' '; { gsub(\"0.0.0.0:\",\"\",\$(NF-2));gsub(\"->7000/tcp,\",\"\",\$(NF-2)); print \"Name: \"\$NF, \"Debug Port: \"\$(NF-2)}'"
+alias fa=" faa | grepm"
 alias fd="fdir; docker-compose down"
-alias fap="fdir; bin/start -a"
+alias fusa="fdir; bin/start -a"
 alias fl="docker-compose logs -f | grep -v 'health\|nsolid'"
 alias fs="docker-compose stop \"\$@\""
 alias ftl="npm run test-local"
@@ -238,8 +244,14 @@ grepm() {
   done
   grep "$a"
 }
-fu() {docker-compose up -d "$@" && fag "$@"}
+fu() {docker-compose up -d "$@" && fa "$@"}
 alias fub="fu es mongo"
-alias fud="fu video geo video-draft geo-draft screens liveplayer vodplayer"
+alias fum="fu proxy linkerd"
+alias fud="fu video geo video-draft geo-draft series series-draft screens liveplayer vodplayer foryou assets favorites bookmarks seasons admin persons"
 fr() { docker-compose stop "$@" && fu "$@"}
+alias fdbl="ln -sf $FOX_DIR/env/d2c/local.env $FOX_DIR/.env && fce"
+alias fdbv="ln -sf $FOX_DIR/env/d2c/vpn.env $FOX_DIR/.env && fce"
 
+export_aws() { export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id --profile fbcd-dcgvideo-$@) && export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key --profile fbcd-dcgvideo-$@) && export AWS_SESSION_TOKEN=$(aws configure get aws_session_token --profile fbcd-dcgvideo-$@) }
+restart_awscred() { rm -rf ~/.aws/credentials && . ~/p3/bin/activate && okta-awscli --okta-profile fbcd-dcgvideo-$@ --profile fbcd-dcgvideo-$@ && deactivate && export_aws $@}
+alias prepare_les="restart_awscred qa && export VDMS_INTEGRATION_URL=https://services.uplynk.com && export VDMS_CONFIGURATION_BUCKET=dcg-video-live-encoder-service-dev && export VDMS_FOX_STAGING_KEY=eAs5wYI6DTGDl4e9i4CiqNs9AtM3P7UeKhzhGmFw && export VDMS_FOX_STAGING_OWNER=8baebcb1115a4bb78fa90c40ae8d81aa"

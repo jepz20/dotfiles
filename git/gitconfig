@@ -128,3 +128,5 @@
 [user]
   name = Jose Eduardo Perdomo
   email = jepz20@gmail.com 
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
